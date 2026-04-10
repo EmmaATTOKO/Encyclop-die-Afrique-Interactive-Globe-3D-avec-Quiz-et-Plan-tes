@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no"
+    />
+    <title>Encyclopédie Afrique - Globe interactif</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://aframe.io/releases/1.1.0/aframe.min.js"></script>
+  </head>
+  <body>
+    <div id="help">
+      <strong>🌍 Encyclopédie Afrique 3D</strong><br />
+      • Points verts clignotants = pays non visités.<br />
+      • Clique → son 🔊 + infos (relief, langues, indépendance, etc.)<br />
+      • Glissez la souris ou utilisez les flèches / ZQSD pour faire tourner le
+      globe.<br />
+      • Quiz avec questions sur les nouvelles données.
+    </div>
+    <div id="quizPanel">
+      <h3>🌍 Quiz Afrique</h3>
+      <p id="scoreLabel">Score : 0</p>
+      <p id="questionText">Clique sur « Nouvelle question » pour commencer.</p>
+      <div id="answers"></div>
+      <button id="nextQuestionBtn">Nouvelle question</button>
+      <p id="quizResult"></p>
+    </div>
+    <div id="infoPanel">
+      <button class="close-info-btn" id="closeInfoBtn">✖</button>
+      <h2 id="countryName"></h2>
+      <img id="countryFlag" src="" alt="Drapeau" />
+      <p><strong>Population :</strong> <span id="countryPopulation"></span></p>
+      <p><strong>Dirigeant :</strong> <span id="countryLeader"></span></p>
+      <p><strong>Monnaie :</strong> <span id="countryCurrency"></span></p>
+      <p><strong>Limitrophes :</strong> <span id="countryNeighbors"></span></p>
+      <p>
+        <strong>🗣️ Langues parlées :</strong>
+        <span id="countryLanguages"></span>
+      </p>
+      <p>
+        <strong>📜 Date d'indépendance :</strong>
+        <span id="countryIndependence"></span>
+      </p>
+      <p><strong>🌄 Relief :</strong> <span id="countryRelief"></span></p>
+    </div>
+
+    <a-scene background="color: #87CEEB">
+      <a-assets>
+        <img
+          id="earthTexture"
+          src="https://threejs.org/examples/textures/planets/earth_atmos_2048.jpg"
+          crossorigin="anonymous"
+        />
+        <img
+          id="cloudTexture"
+          src="https://threejs.org/examples/textures/planets/earth_clouds_1024.png"
+          crossorigin="anonymous"
+        />
+      </a-assets>
+      <a-sky color="#87CEEB"></a-sky>
+      <a-entity
+        light="type: ambient; color: #ffffff"
+        intensity="0.8"
+      ></a-entity>
+      <a-entity
+        light="type: directional; intensity: 1.5"
+        position="5 10 3"
+      ></a-entity>
+      <a-entity
+        light="type: point; intensity: 0.6"
+        position="-3 2 4"
+        color="#ffccaa"
+      ></a-entity>
+
+      <a-entity position="0 1.6 5">
+        <a-camera
+          cursor="rayOrigin: mouse"
+          raycaster="objects: .country-marker"
+        >
+          <a-cursor color="#00ffff"></a-cursor>
+        </a-camera>
+        <a-entity
+          laser-controls="hand: left"
+          raycaster="objects: .country-marker"
+        ></a-entity>
+        <a-entity
+          laser-controls="hand: right"
+          raycaster="objects: .country-marker"
+        ></a-entity>
+      </a-entity>
+
+      <a-entity orbiting-planets></a-entity>
+
+      <!-- Globe avec rotation initiale pour montrer l'Afrique, + contrôles souris et clavier -->
+      <a-entity
+        id="globeContainer"
+        position="0 1.6 -3"
+        drag-rotate
+        keyboard-rotate
+        rotation="0 -20 0"
+      >
+        <a-sphere
+          radius="1.3"
+          material="src: #earthTexture; shader: standard; roughness: 0.4; metalness: 0.1"
+          segments-width="128"
+          segments-height="128"
+          shadow
+        ></a-sphere>
+        <a-sphere
+          radius="1.31"
+          material="src: #cloudTexture; transparent: true; opacity: 0.25; shader: standard"
+          segments-width="128"
+          segments-height="128"
+        ></a-sphere>
+        <a-sphere
+          radius="1.302"
+          material="shader: standard; transparent: true; opacity: 0.12; color: #8fcbff"
+          segments-width="128"
+          segments-height="128"
+        ></a-sphere>
+        <a-plane
+          id="flag3D"
+          width="0.6"
+          height="0.4"
+          visible="false"
+          material="side: double"
+          position="0 0 2"
+          animation="property: rotation; to: 0 360 0; loop: true; dur: 12000; easing: linear"
+        ></a-plane>
+      </a-entity>
+    </a-scene>
+
+    <script src="script.js"></script>
+  </body>
+</html>
